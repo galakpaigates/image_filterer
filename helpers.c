@@ -243,7 +243,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
     int green_magnitude = 0;
     int blue_magnitude = 0;
 
-    // Create Image to Save Image with additional one pixel border
+    // Create Image to Save Image
     RGBTRIPLE(*copy)[width+2] = calloc((height+2), (width+2) * sizeof(RGBTRIPLE));
 
     // Add one pixel black border around the image to avoid mem errors during runtime
@@ -289,25 +289,22 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
         }
     }
 
-    // Loop through image copy
+    // Do the x axis first
     for (i = 1; i < height+1; i++)
     {
         for (j = 1; j < width+1; j++)
         {
-            // Y Axis
-            y_red = (copy[i-1][j-1].rgbtRed * -1) + (copy[i-1][j].rgbtRed * -2) + (copy[i-1][j+1].rgbtRed * -1) + (copy[i+1][j-1].rgbtRed) + (copy[i+1][j].rgbtRed * 2) + (copy[i+1][j+1].rgbtRed);
-            y_green = (copy[i-1][j-1].rgbtGreen * -1) + (copy[i-1][j].rgbtGreen * -2) + (copy[i-1][j+1].rgbtGreen * -1) + (copy[i+1][j-1].rgbtGreen) + (copy[i+1][j].rgbtGreen * 2) + (copy[i+1][j+1].rgbtGreen);
-            y_blue = (copy[i-1][j-1].rgbtBlue * -1) + (copy[i-1][j].rgbtBlue * -2) + (copy[i-1][j+1].rgbtBlue * -1) + (copy[i+1][j-1].rgbtBlue) + (copy[i+1][j].rgbtBlue * 2) + (copy[i+1][j+1].rgbtBlue);
+            y_red = (copy[i-1][j-1].rgbtRed * -1) + (copy[i-1][j].rgbtRed * -2) + (copy[i-1][j+1].rgbtRed * -1) + (copy[i+1][j-1].rgbtRed * 1) + (copy[i+1][j].rgbtRed * 2) + (copy[i+1][j+1].rgbtRed * 1);
+            y_green = (copy[i-1][j-1].rgbtGreen * -1) + (copy[i-1][j].rgbtGreen * -2) + (copy[i-1][j+1].rgbtGreen * -1) + (copy[i+1][j-1].rgbtGreen * 1) + (copy[i+1][j].rgbtGreen * 2) + (copy[i+1][j+1].rgbtGreen * 1);
+            y_blue = (copy[i-1][j-1].rgbtBlue * -1) + (copy[i-1][j].rgbtBlue * -2) + (copy[i-1][j+1].rgbtBlue * -1) + (copy[i+1][j-1].rgbtBlue * 1) + (copy[i+1][j].rgbtBlue * 2) + (copy[i+1][j+1].rgbtBlue * 1);
 
-            // X Axis
-            x_red = (copy[i-1][j-1].rgbtRed * -1) + (copy[i][j-1].rgbtRed * -2) + (copy[i+1][j-1].rgbtRed * -1) + (copy[i-1][j+1].rgbtRed) + (copy[i][j+1].rgbtRed * 2) + (copy[i+1][j+1].rgbtRed);
-            x_green = (copy[i-1][j-1].rgbtGreen * -1) + (copy[i][j-1].rgbtGreen * -2) + (copy[i+1][j-1].rgbtGreen * -1) + (copy[i-1][j+1].rgbtGreen) + (copy[i][j+1].rgbtGreen * 2) + (copy[i+1][j+1].rgbtGreen);
-            x_blue = (copy[i-1][j-1].rgbtBlue * -1) + (copy[i][j-1].rgbtBlue * -2) + (copy[i+1][j-1].rgbtBlue * -1) + (copy[i-1][j+1].rgbtBlue) + (copy[i][j+1].rgbtBlue * 2) + (copy[i+1][j+1].rgbtBlue);
+            x_red = (copy[i-1][j-1].rgbtRed * -1) + (copy[i][j-1].rgbtRed * -2) + (copy[i+1][j-1].rgbtRed * -1) + (copy[i-1][j+1].rgbtRed * 1) + (copy[i][j+1].rgbtRed * 2) + (copy[i+1][j+1].rgbtRed * 1);
+            x_green = (copy[i-1][j-1].rgbtGreen * -1) + (copy[i][j-1].rgbtGreen * -2) + (copy[i+1][j-1].rgbtGreen * -1) + (copy[i-1][j+1].rgbtGreen * 1) + (copy[i][j+1].rgbtGreen * 2) + (copy[i+1][j+1].rgbtGreen * 1);
+            x_blue = (copy[i-1][j-1].rgbtBlue * -1) + (copy[i][j-1].rgbtBlue * -2) + (copy[i+1][j-1].rgbtBlue * -1) + (copy[i-1][j+1].rgbtBlue * 1) + (copy[i][j+1].rgbtBlue * 2) + (copy[i+1][j+1].rgbtBlue * 1);
 
-            // Sum Products from x and y axis
-            red_magnitude = (int)round(sqrt(sqrt(x_red) + sqrt(y_red)));
-            green_magnitude = (int)round(sqrt(sqrt(x_green) + sqrt(y_green)));
-            blue_magnitude = (int)round(sqrt(sqrt(x_blue) + sqrt(y_blue)));
+            red_magnitude = (int)round(sqrt(x_red * x_red + y_red * y_red));
+            green_magnitude = (int)round(sqrt(x_green * x_green + y_green * y_green));
+            blue_magnitude = (int)round(sqrt(x_blue * x_blue + y_blue * y_blue));
 
             // Cap Red Value
             if (red_magnitude > 255)
@@ -323,9 +320,9 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
 
             if (red_magnitude > 50 || green_magnitude > 50 || blue_magnitude > 50)
             {
-                image[i-1][j-1].rgbtRed = red_magnitude;
-                image[i-1][j-1].rgbtGreen = green_magnitude;
-                image[i-1][j-1].rgbtBlue = blue_magnitude;
+                image[i-1][j-1].rgbtRed = (int)red_magnitude;
+                image[i-1][j-1].rgbtGreen = (int)green_magnitude;
+                image[i-1][j-1].rgbtBlue = (int)blue_magnitude;
             }
         }
     }
@@ -335,7 +332,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
-// ensure the channel value is atmost 255
+// ensure each channel value is atmost 255
 void cap_value(float *value)
 {
     if (*value > 255)
