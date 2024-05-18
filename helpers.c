@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 
 #include "helpers.h"
@@ -10,7 +9,7 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
     int i, j;
     int sum = 0;
-
+	
     for (i = 0; i < height; i++)
     {
         for (j = 0; j < width; j++)
@@ -43,8 +42,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
             image[i][j] = tmp;
         }
     }
-
-    return;
+return;
 }
 
 // Convert image to sepia
@@ -340,3 +338,4 @@ void cap_value(float *value)
 
     return;
 }
+
