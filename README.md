@@ -4,7 +4,7 @@
 #### Usage:
     ./filter [filter-flag] [input_file_path] [output_file]
 
-#### Available Flags:
+#### Available Filter Flags:
     -s | Sepia
     -g | Grayscale
     -r | Reflect
@@ -12,7 +12,8 @@
     -e | Detect Edges
 
 #### Note:
-### The Input Image must be a Bit-Map Image (BMP)
-### Convert your Image to BMP here: https://image.online-convert.com/convert-to-bmp
+##### The Input Image must be a Bit-Map Image (BMP)
+##### Convert your Image to BMP here: https://online-converting.com/image/convert2bmp/
+##### The link above will convert image to 24 bit color.
 
-#### Customized Problem Set from CS50x
+##### Customized Problem Set from CS50x
