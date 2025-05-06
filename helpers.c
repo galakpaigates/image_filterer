@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -42,7 +43,8 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
             image[i][j] = tmp;
         }
     }
-return;
+
+	return;
 }
 
 // Convert image to sepia
@@ -77,26 +79,25 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    int i, j;
     int red_sum = 0;
     int blue_sum = 0;
     int green_sum = 0;
 
     // Create Image to Save Image
-    RGBTRIPLE(*copy)[width+2] = calloc((height+1), (width+1) * sizeof(RGBTRIPLE));
+    RGBTRIPLE(*copy)[width] = calloc((height), (width) * sizeof(RGBTRIPLE));
+	if (copy == NULL) {
+		printf("Error creating temporary image, try again");
+		return;
+	}
 
     // Copy original image into tmp
-    for (i = 0; i < height; i++)
-    {
-        for (j = 0; j < width; j++)
-        {
-            copy[i][j] = image[i][j];
-        }
-    }
+	for (int i = 0; i < height; i++) 
+		for (int j = 0; j < width; j++) 
+			copy[i][j] = image[i][j];
 
-    for (i = 0; i < height; i++)
+    for (int i = 0; i < height; i++)
     {
-        for (j = 0; j < width; j++)
+        for (int j = 0; j < width; j++)
         {
             // Handle top row
             if (i < 1)
